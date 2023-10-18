@@ -1,0 +1,21 @@
+# ebean configuration
+ebean:
+  dumpMetricsOnShutdown: true
+  dumpMetricsOptions: loc,sql,hash
+  ddl:
+    generate: true
+    run: true
+  debug:
+    sql: true
+    lazyload: true
+  logging: all
+
+# database configuration
+datasource:
+  db:
+    username: conserjeria
+    password: 79z#5RX&qq5z
+    platform: sqlite # h2, postgres, mysql, oracle, sqlserver
+    ddlMode: dropCreate # none | dropCreate | migrations
+    dbName: conserjeria
+    url: jdbc:sqlite:conserjeria.db

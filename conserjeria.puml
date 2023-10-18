@@ -1,0 +1,123 @@
+@startuml
+' left to right direction
+skin rose
+set separator none
+hide empty members
+
+package io.ebean.Database <<extern>> {
+    class Database {
+    }
+}
+
+package cl.ucn.disc.as.conserjeria.model {
+
+    class BaseModel <<abstract>> {
+        - {static} id: Long
+        - created: Instant
+        - modified: Instant
+        - version: Long
+        + BaseModel(..)
+        + getId(): Long
+        + getCreated(): Instant
+        + getModified(): Instant
+        + getVersion(): Long
+        # setId(id: Long): void
+        # setCreated(created: Instant): void
+        # setModified(modified: Instant): void
+        # setVersion(version: Long): void
+    }
+
+    class Departamento {
+        - numero: Integer
+        - piso: Integer
+        + Departamento(numero: Integer, piso: Integer)
+        + getNumero(): Integer
+        + getPiso(): Integer
+    }
+    Departamento --|> BaseModel
+
+    class Edificio {
+        - nombre: String
+        - direccion: String
+        --
+        + Edificio(nombre: String, direccion: String)
+        + getNombre(): String
+        + getEdificio(): String
+        ..
+        + add(departamento: Departamento): void
+        + getDepartamento(): List<Departamento>
+    }
+    Edificio --|> BaseModel
+    Edificio --> "*" Departamento: - List<Departamento> departamentos
+
+    class Persona {
+        - rut: String
+        - nombre: String
+        - apellidos: String
+        - email: String
+        - telefono: String
+        + Persona(rut: String, nombre: String, apellidos: String, email: String, telefono: String)
+        + getRut(): String
+        + getNombre(): String
+        + getApellidos(): String
+        + getEmail(): String
+        + getTelefono(): String
+    }
+    Persona --|> BaseModel
+
+    class Contrato {
+        - fechaPago: Instant
+        --
+        + Contrato(persona: Persona, departamento: Departamento, fechaPago: Instant)
+        + getFechaPago(): Instant
+        ..
+        + getPersona(): Persona
+        + getDepartamento(): Departamento
+        + getPagos(): List<Pago>
+    }
+    Contrato --|> BaseModel
+    Contrato --> "1" Persona: - persona: Persona
+    Contrato --> "1" Departamento: - departamento: Departamento
+
+    class Pago {
+        - fechaPago: Instant
+        - monto: Integer
+        + Pago(fechaPago: Instant, monto: Integer)
+        + getFechaPago(): Instant
+        + getMonto(): Integer
+    }
+    Pago "*" <-- Contrato: - pagos: List<Pago>
+
+}
+
+package cl.ucn.disc.as.conserjeria.services {
+
+    interface Sistema {
+        + add(edificio: Edificio): Edificio
+        + add(persona: Persona): Persona
+        ..
+        + addDepartamento(departamento: Departamento, edificio: Edificio): Departamento
+        + addDepartamento(departamento: Departamento, idEdificio: Long): Departamento
+        ..
+        + realizarContrato(duenio: Persona, departamento: Departamento, fechaPago: Instant): Contrato
+        + realizarContrato(idDuenio: Long, idDepartamento: Long, fechaPago: Instant): Contrato
+        ..
+        + getContratos(): List<Contrato>
+        + getPersonas(): List<Persona>
+        + getPagos(rut: String): List<Pago>
+    }
+    Sistema ..> Edificio: <<uses>>
+    Sistema ..> Departamento: <<uses>>
+    Sistema ..> Contrato: <<uses>>
+    Sistema ..> Persona: <<uses>>
+    Sistema ..> Pago: <<uses>>
+
+    class SistemaImpl {
+        + SistemaImpl(database: Database)
+    }
+    SistemaImpl ..|> Sistema
+    SistemaImpl --> "1" Database
+
+}
+
+@enduml
