@@ -1,12 +1,12 @@
-package cl.ucn.disc.as.services;
+package cl.ucn.disc.as.conserjeria.services;
 
-import cl.ucn.disc.as.exceptions.IllegalDomainException;
-import cl.ucn.disc.as.exceptions.SistemaException;
-import cl.ucn.disc.as.model.Contrato;
-import cl.ucn.disc.as.model.Departamento;
-import cl.ucn.disc.as.model.Edificio;
-import cl.ucn.disc.as.model.Pago;
-import cl.ucn.disc.as.model.Persona;
+import cl.ucn.disc.as.conserjeria.exceptions.IllegalDomainException;
+import cl.ucn.disc.as.conserjeria.exceptions.SistemaException;
+import cl.ucn.disc.as.conserjeria.model.Contrato;
+import cl.ucn.disc.as.conserjeria.model.Departamento;
+import cl.ucn.disc.as.conserjeria.model.Edificio;
+import cl.ucn.disc.as.conserjeria.model.Pago;
+import cl.ucn.disc.as.conserjeria.model.Persona;
 import io.ebean.Database;
 import io.ebean.Query;
 import java.time.Instant;
@@ -136,11 +136,11 @@ public class SistemaImpl implements Sistema {
     }
 
 
-    /*
-        /**
-           * Realiza un contrato por id
 
-        @Override
+    /**
+     * Obtiene una lista de contratos
+     */
+    @Override
     public Contrato realizarContrato1(Long idDuenio, Long idDepartamento, Instant fechaPago) {
 
         try {
@@ -153,12 +153,11 @@ public class SistemaImpl implements Sistema {
 
             return this.realizarContrato(duenio, departamento, fechaPago);
         } catch (NullPointerException e) {
-             //Manejo de la NullPointerException
+            //Manejo de la NullPointerException
             System.err.println("Se ha producido una NullPointerException: " + e.getMessage());
             return null; // O devuelve un valor predeterminado
         }
     }
-     */
 
 
     /**
@@ -191,14 +190,31 @@ public class SistemaImpl implements Sistema {
         }
     }
 
+    @Override
+    public Persona getPersona(String rut) {
+        try {
+            Query<Persona> query = database.find(Persona.class)
+                    .where()
+                    .eq("rut", rut)
+                    .query();
+
+            return query.findOne();
+        } catch (PersistenceException ex) {
+            // Manejar la excepción de persistencia.
+            log.error("Error al recuperar la persona con rut " + rut, ex);
+            throw new SistemaException("Error al obtener la persona con rut " + rut, ex);
+        }
+    }
+
     /**
      * Obtiene una lista de pagos ingresando el rut
      */
     @Override
     public List<Pago> getPagos(String rut) {
         Query<Pago> query = database.find(Pago.class)
+                .fetch("contrato.persona")
                 .where()
-                .eq("persona.rut", rut)
+                .eq("contrato.persona.rut", rut)
                 .query();
         return query.findList();
     }

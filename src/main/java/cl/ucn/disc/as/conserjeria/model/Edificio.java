@@ -1,4 +1,4 @@
-package cl.ucn.disc.as.model;
+package cl.ucn.disc.as.conserjeria.model;
 
 import io.ebean.annotation.NotNull;
 import lombok.*;
@@ -6,7 +6,6 @@ import lombok.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

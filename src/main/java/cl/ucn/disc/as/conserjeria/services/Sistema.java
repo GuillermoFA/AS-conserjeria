@@ -1,6 +1,6 @@
-package cl.ucn.disc.as.services;
+package cl.ucn.disc.as.conserjeria.services;
 
-import cl.ucn.disc.as.model.*;
+import cl.ucn.disc.as.conserjeria.model.*;
 
 import java.time.Instant;
 import java.util.List;
@@ -32,28 +32,36 @@ public interface Sistema {
 
     /**
      * Agrega un departamento al edificio
-     * @param departamento a agregar y vincular con edificio
+     * @param departamento a agregar
+     * @param edificio edificio a vincular con departamento
      */
     Departamento addDepartamento(Departamento departamento, Edificio edificio);
 
     /**
      * Agrega un departamento al sistema
      * @param departamento a agregar con el id del edificio
+     * @param idEdificio id del edificio
      */
     Departamento addDepartamento(Departamento departamento, Long idEdificio);
 
     /**
      * Realiza un contrato
-     * @param duenio del departamento, Departamento que pertenece, fecha del pago.
+     * @param duenio del departamento.
+     * @param departamento departamento del dueño
+     * @param fechaPago fecha que se realizó un pago.
      */
     Contrato realizarContrato(Persona duenio, Departamento departamento, Instant fechaPago);
 
 
-    /*
-         //* Realiza un contrato
-     * @param idDuenio la id del dueño, el id del departamento y la fecha de pago.
-    Contrato realizarContrato1(Long idDuenio, Long idDepartamento, Instant fechaPago);
+
+    /**
+     * Realiza un contrato
+     * @param idDuenio  id del dueño que se le realiza un contrato.
+     * @param idDepartamento id departamento del dueño
+     * @param fechaPago fecha que se realizó un pago.
      */
+    Contrato realizarContrato1(Long idDuenio, Long idDepartamento, Instant fechaPago);
+
 
 
     /**
@@ -71,4 +79,6 @@ public interface Sistema {
      * @param rut el rut de la persona
      */
     List<Pago> getPagos(String rut);
+
+    Persona getPersona(String rut);
 }

@@ -1,4 +1,4 @@
-package cl.ucn.disc.as.exceptions;
+package cl.ucn.disc.as.conserjeria.exceptions;
 
 import javax.persistence.PersistenceException;
 

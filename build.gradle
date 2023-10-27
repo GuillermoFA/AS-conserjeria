@@ -1,12 +1,12 @@
 plugins {
     id 'idea'
     id 'java'
-    id('io.ebean') version '13.11.0'
-    id('com.github.ben-manes.versions') version '0.48.0'
+    id('io.ebean') version '13.23.0'
+    id('com.github.ben-manes.versions') version '0.49.0'
 }
 
 group = 'cl.ucn.disc.as'
-version = '0.0.1'
+version = '0.0.4'
 
 repositories {
     mavenLocal()
@@ -20,50 +20,61 @@ java {
 }
 
 compileJava {
-    options.release = 17
     options.encoding = 'UTF-8'
+}
+
+ext{
+    ebeanVersion = '13.23.1'
+    sqliteVersion = '3.43.2.1'
+    javalinVersion = '5.6.3'
+    // brotliVersion = '1.12.0'
+    lombokVersion = '1.18.30'
+    gsonVersion = '2.10.1'
+    logbackVersion = '1.4.11'
+    commonsLangVersion = '3.13.0'
+    javaFakerVersion = '1.0.2'
 }
 
 dependencies {
     // junit
-    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     // lombok
-    testCompileOnly 'org.projectlombok:lombok:1.18.28'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
     // ebean
-    testImplementation 'io.ebean:ebean-test:13.11.0'
+    testImplementation "io.ebean:ebean-test:${ebeanVersion}"
 
     // ebean
-    implementation 'io.ebean:ebean:13.11.0'
-    implementation 'io.ebean:ebean-ddl-generator:13.21.0'
-    annotationProcessor 'io.ebean:querybean-generator:13.11.0'
+    implementation "io.ebean:ebean:${ebeanVersion}"
+    implementation "io.ebean:ebean-ddl-generator:${ebeanVersion}"
+    annotationProcessor "io.ebean:querybean-generator:${ebeanVersion}"
 
     // database
-    implementation 'org.xerial:sqlite-jdbc:3.43.0.0'
+    implementation "org.xerial:sqlite-jdbc:${sqliteVersion}"
     // implementation 'com.h2database:h2:2.2.220'
 
     // json
-    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation "com.google.code.gson:gson:${gsonVersion}"
 
     // web: javalin
-    implementation 'io.javalin:javalin:5.6.1'
+    implementation "io.javalin:javalin:${javalinVersion}"
 
     // lombok
-    compileOnly 'org.projectlombok:lombok:1.18.28'
-    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
     // logger
-    implementation 'ch.qos.logback:logback-core:1.4.11'
-    implementation 'ch.qos.logback:logback-classic:1.4.11'
+    implementation "ch.qos.logback:logback-core:${logbackVersion}"
+    implementation "ch.qos.logback:logback-classic:${logbackVersion}"
 
     // commons-lang3
-    implementation 'org.apache.commons:commons-lang3:3.13.0'
+    implementation "org.apache.commons:commons-lang3:${commonsLangVersion}"
 
     // data faker
-    implementation 'com.github.javafaker:javafaker:1.0.2'
+    implementation "com.github.javafaker:javafaker:${javaFakerVersion}"
 }
 
 ebean {
