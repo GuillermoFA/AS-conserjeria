@@ -7,14 +7,17 @@ import cl.ucn.disc.as.conserjeria.model.Departamento;
 import cl.ucn.disc.as.conserjeria.model.Edificio;
 import cl.ucn.disc.as.conserjeria.model.Pago;
 import cl.ucn.disc.as.conserjeria.model.Persona;
+import com.github.javafaker.Faker;
+import com.github.javafaker.service.FakeValuesService;
+import com.github.javafaker.service.RandomService;
 import io.ebean.Database;
 import io.ebean.Query;
 import java.time.Instant;
 import java.util.List;
+import java.util.Locale;
 import javax.persistence.PersistenceException;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-
 
 /**
  * Sistema implementación.
@@ -217,6 +220,43 @@ public class SistemaImpl implements Sistema {
                 .eq("contrato.persona.rut", rut)
                 .query();
         return query.findList();
+    }
+    /**
+     * Poblar la base de Datos con PERSONA
+     */
+    @Override
+    public void populate(){
+
+        // build the persona
+        {
+            Persona persona = Persona.builder()
+                    .rut("20416349-9")
+                    .nombre("Guillermo")
+                    .apellidos("Fuentes Ávila")
+                    .email("guillermo.fuentes01@alumnos.ucn.cl")
+                    .telefono("+569999999")
+                    .build();
+            this.database.save(persona);
+        }
+
+        // the faker
+        Locale locale = new Locale("es-CL");
+        FakeValuesService fvs = new FakeValuesService(locale, new RandomService());
+        Faker faker = new Faker(locale);
+
+        //faker
+        for (int i = 0; i < 1000; i++) {
+            Persona persona = Persona.builder()
+                    .rut(fvs.bothify("########-#"))
+                    .nombre(faker.name()
+                            .firstName())
+                    .apellidos(faker.name()
+                            .lastName())
+                    .email(fvs.bothify("????##@gmail.com"))
+                    .telefono(fvs.bothify("+569########"))
+                    .build();
+            this.database.save(persona);
+        }
     }
 }
 

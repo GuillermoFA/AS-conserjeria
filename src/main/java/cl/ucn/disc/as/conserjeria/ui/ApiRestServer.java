@@ -10,7 +10,7 @@ import io.javalin.Javalin;
 import io.javalin.json.JsonMapper;
 import org.jetbrains.annotations.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.Instant;
@@ -88,19 +88,24 @@ public final class ApiRestServer {
             }
         };
         return Javalin.create(config -> {
+            //json mapper configuration
             config.jsonMapper(jsonMapper);
+            //gzip compression
             config.compression.gzipOnly(9);
             config.requestLogger.http((ctx,ms) -> {
                 log.debug("served: {} in {} ms.", ctx.fullUrl(), ms);
             });
+            config.plugins.enableDevLogging();
         });
     }
 
     /**
      * Starting the server.
+     *
      * @param port to use
+     * @return
      */
-    public static void start(final Integer port, final RoutesConfigurator routersConfigurator){
+    public static Javalin start(final Integer port, final RoutesConfigurator routersConfigurator){
         if(port < 1024 || port > 65535){
             log.error("Bad port {}.", port);
             throw new IllegalArgumentException("Bad port: "+ port);
@@ -112,6 +117,9 @@ public final class ApiRestServer {
 
         //configure the paths
         routersConfigurator.configure(app);
+
+        // the hookup thread
+        Runtime.getRuntime().addShutdownHook(new Thread(app::stop));
 
         // hooks to detect the shutdown
         app.events(event -> {
@@ -127,9 +135,9 @@ public final class ApiRestServer {
             event.serverStopped(()-> {
                 log.debug("Server stopped!");
             });
-
-            app.start(port);
         });
+        // start!
+        return app.start(port);
     }
 
 }

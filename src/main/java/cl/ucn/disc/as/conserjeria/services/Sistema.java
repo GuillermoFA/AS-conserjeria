@@ -80,5 +80,15 @@ public interface Sistema {
      */
     List<Pago> getPagos(String rut);
 
+    /**
+     *
+     * @param rut rut de PERSONA
+     * @return rut de la persona
+     */
     Persona getPersona(String rut);
+
+    /**
+     * Poblar la base de datos
+     */
+    void populate();
 }

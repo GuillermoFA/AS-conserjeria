@@ -7,6 +7,7 @@ package cl.ucn.disc.as.conserjeria.model;
 import cl.ucn.disc.as.conserjeria.exceptions.IllegalDomainException;
 import cl.ucn.disc.as.utils.ValidationUtils;
 
+import io.ebean.annotation.Cache;
 import io.ebean.annotation.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +24,8 @@ import java.util.List;
  *
  * @author Guillermo Fuentes Avila
  */
+@Cache(enableQueryCache = true, nearCache = true)
+@Getter
 @ToString(callSuper = true)
 @AllArgsConstructor
 @Builder
@@ -78,14 +81,16 @@ public class Persona extends BaseModel {
         public Persona build(){
 
             //validate the rut
-            if(!ValidationUtils.isRutValid((this.rut))){
-                throw new IllegalDomainException("RUT no valido: "+this.rut);
-            }
-
-            //validate the email
-            if (!ValidationUtils.isEmailValid(this.email)){
-                throw new IllegalDomainException("Email no valido: "+this.email);
-            }
+            /**
+             *             if(!ValidationUtils.isRutValid((this.rut))){
+             *                 throw new IllegalDomainException("RUT no valido: "+this.rut);
+             *             }
+             *
+             *             //validate the email
+             *             if (!ValidationUtils.isEmailValid(this.email)){
+             *                 throw new IllegalDomainException("Email no valido: "+this.email);
+             *             }
+             * */
 
             this.contratos = new ArrayList<>();
 
