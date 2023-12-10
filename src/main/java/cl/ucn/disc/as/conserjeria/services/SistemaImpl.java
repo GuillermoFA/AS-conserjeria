@@ -194,19 +194,10 @@ public class SistemaImpl implements Sistema {
     }
 
     @Override
-    public Persona getPersona(String rut) {
-        try {
-            Query<Persona> query = database.find(Persona.class)
-                    .where()
-                    .eq("rut", rut)
-                    .query();
+    public Persona getPersonas(String rut) {
+        Query<Persona> query = database.find(Persona.class);
+        return (Persona) query.where().eq("rut",rut).findList();
 
-            return query.findOne();
-        } catch (PersistenceException ex) {
-            // Manejar la excepción de persistencia.
-            log.error("Error al recuperar la persona con rut " + rut, ex);
-            throw new SistemaException("Error al obtener la persona con rut " + rut, ex);
-        }
     }
 
     /**

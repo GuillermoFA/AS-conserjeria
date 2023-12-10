@@ -3,7 +3,7 @@ package conserjeria;
 
 option java_package = "cl.ucn.disc.as.conserjeria.grpc";
 option java_multiple_files = true;
-option optimize_for = SPEED;
+option optimize_for = CODE_SIZE;
 
 message PersonaGrpc {
   string rut = 1;
@@ -23,6 +23,6 @@ message PersonaGrpcResponse {
   PersonaGrpc persona = 1;
 }
 
-service PersonaGrpcServivce {
+service PersonaGrpcService {
   rpc retrieve(PersonaGrpcRequest) returns (PersonaGrpcResponse);
 }

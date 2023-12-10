@@ -85,7 +85,7 @@ public interface Sistema {
      * @param rut rut de PERSONA
      * @return rut de la persona
      */
-    Persona getPersona(String rut);
+    Persona getPersonas(String rut);
 
     /**
      * Poblar la base de datos
