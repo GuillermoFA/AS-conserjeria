@@ -4,6 +4,8 @@ buildscript {
         sqliteVersion = '3.44.0.0'
         javalinVersion = '5.6.3'
 
+        mariadbVersion = '3.3.1'
+
         lombokVersion = '1.18.30'
         gsonVersion = '2.10.1'
         logbackVersion = '1.4.11'
@@ -78,9 +80,10 @@ dependencies {
     implementation "io.ebean:ebean:${ebeanVersion}"
     implementation "io.ebean:ebean-ddl-generator:${ebeanVersion}"
     annotationProcessor "io.ebean:querybean-generator:${ebeanVersion}"
-
+    implementation "io.ebean:ebean-mariadb:${ebeanVersion}"
     // database
     implementation "org.xerial:sqlite-jdbc:${sqliteVersion}"
+    implementation "org.mariadb.jdbc:mariadb-java-client:${mariadbVersion}"
     // implementation 'com.h2database:h2:2.2.220'
 
     // json

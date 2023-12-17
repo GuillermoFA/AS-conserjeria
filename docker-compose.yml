@@ -5,6 +5,8 @@ services:
     image: conserjeria_image:v1.0
     ports:
       - "7070:7070"
+    depends_on:
+      - sqlite
     build:
       context: .
       dockerfile: Dockerfile
