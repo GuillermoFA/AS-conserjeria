@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  myapp:
+    container_name: conserjeria_container
+    image: conserjeria_image:v1.0
+    ports:
+      - "7070:7070"
+    build:
+      context: .
+      dockerfile: Dockerfile

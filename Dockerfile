@@ -17,5 +17,7 @@ FROM openjdk:17-jdk
 # Copia el JAR desde la etapa de construcción a la ubicación deseada
 COPY --from=build /usr/app/build/libs/*.jar /app.jar
 
+EXPOSE 7070
+
 # Define el comando de entrada predeterminado al ejecutar el contenedor
 ENTRYPOINT ["java", "-jar", "/app.jar"]
